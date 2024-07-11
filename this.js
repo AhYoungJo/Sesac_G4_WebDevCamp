@@ -4,9 +4,10 @@ const circle = {
     getDiameter(){
         //메서드는 자신이 속한 객체를 가리키는 식별자를 재귀적으로 참조할 수 있다.
         //재귀? 
-        return 2 * circle.radius;
+        return 2 * this.radius;
     }
 }
+
 console.log('객체 리터럴은 내부에서 자기 자신을 참조할 수가 있다. circle.getDiameter(): ', circle.getDiameter());
 
 
@@ -22,7 +23,9 @@ console.log('객체 리터럴은 내부에서 자기 자신을 참조할 수가 
  */
 
 ///////////////////////////////////////////////////////
-// //생성자 함수로 생성한 객체 / 얘는 인스턴스로 객체를 생성
+// 생성자 함수로 생성한 객체
+// 정의는 일반 함수처럼 하는데, new 연산자랑 같이 호출하면 생성자 함수로 작동
+// 생성자 함수: 객체(인스턴스)를 생성하는 함수
 function Circle(radius){
     //이때는 생성할 인스턴스를 가리키는 식별자를 알 수 없음 -> 참조 불가능
     ???.radius = radius;
@@ -42,8 +45,12 @@ console.log(Circle.radius)
 
 // //인스턴스 생성한 뒤 그제서야 식별자 circle2를 탐조해서 값을 제대로 출력
 const circle2 = new Circle(2)
-console.log(circle2.radius)
 
+circle = {
+    radius: 2
+}
+
+console.log(circle2.radius)
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -88,6 +95,7 @@ const obj = {
 }
 obj.foo();
 
+
 // obj 객체의 this와 콜백 함수의 this를 매치 시키는 방법 중...
 //첫 번째 방법: 명시적으로 this를 다른 변수에 할당해서 사용하기
 var value1 = 1;
@@ -124,10 +132,9 @@ const obj3 = {
 }
 obj3.foo();
 
+
 //this는 보통 자기 참조를 하기 위해 사용하는 것이기 때문에, 
 //객체의 메서드나 생성자 함수 내부에서만 사용하는 것이 좋다.
-
-
 
 //우리가 아는 메서드는 객체의 프로퍼티에 바인딩된 함수 객체
 //즉, 객체의 프로퍼티와 함수 객체가 각각의 메모리에 존재하고, 서로 연결되어 있는 것
@@ -156,5 +163,49 @@ console.log("getName() === window.name는 사실일까? ", getName() === window.
 //메서드를 호출한 대상이 누구인가와 관련 있다~!
 
 
+const ahyoung = {
+    age : 20,
+    year: 2024,
+    sum(){
+        return this.age + this.year
+    }
+}
+
+const haru = {
+    age: 10,
+    //year: 2020,
+}
+
+//프로퍼티 추가하는 방법
+haru.year = 2020;
+
+//getSum이라는 메소드를 haru객체에 추가하는데, getSum 메소드에 ahyoung의 sum 함수를 할당한다.
+haru.getSum = ahyoung.sum;
+
+const haru = {
+    age: 10,
+    year: 2020,
+    getSum(){
+        return this.age + this.year
+    }
+}
+
+console.log(haru.getSum());
+
+
+//방법1
+const fruits = {
+    'apple': 'apple'
+}
+//방법2
+fruits.banana = 'banana';
+
+console.log(fruits)
+
+//방법2의 응용
+const fruit1 = 'pineapple';
+fruits.pineapple = fruit1;
+fruits.color = fruit1
+console.log(fruits.apple)
 
 
