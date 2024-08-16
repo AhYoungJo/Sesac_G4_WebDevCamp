@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Event</title>
+        <style>
+            nav {
+                border: 1px solid #ccc;
+            }
+            #fruits {
+                display: flex;
+                list-style-type: none;
+                padding: 0;
+            }
+
+            #fruits li {
+                width: 100px;
+                cursor: pointer;
+            }
+
+            #fruits .active {
+                color: red;
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <ul id="fruits">
+                <li id="apple" class="active">Apple</li>
+                <li id="banana">Banana</li>
+                <li id="orange">Orange</li>
+            </ul>
+        </nav>
+        <div>
+            선택된 내비게이션 아이템:
+            <p class="msg">apple</p>
+        </div>
+        <script>
+            const $fruits = document.getElementById('fruits');
+            const $msg = document.querySelector('.msg');
+            function activate({target, currentTarget}) {
+                if (!target.matches('#fruits > li')) return;
+                [...$fruits.children].forEach($fruit => {
+                    $fruit.classList.toggle('active', $fruit === target);
+                    $msg.textContent = target.id;
+                });
+                console.log('currentTarget: ', currentTarget.id); //fruits
+                console.log('target: ', target.id); //li요소 중 클릭 이벤트가 발생한 곳
+                console.log(
+                    'this와 currentTarget값이 일치하는가? ',
+                    this === currentTarget,
+                ); //
+            }
+
+            $fruits.onclick = activate;
+        </script>
+    </body>
+</html>
+
+<!--stopPropagation은 이벤트 전파를 방지하는 메서드로, 하위 Dom 요소의 이벤트를 개별적으로 처리할 때 사용할 수 있다고 하는데, 실제 현업에서 자주 이용하나? 개별적으로 이벤트 처리해주고 싶을 때마다 이거를 사용해줘야 하는건가?-->
