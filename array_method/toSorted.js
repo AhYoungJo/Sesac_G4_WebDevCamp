@@ -22,3 +22,13 @@ console.log(Array.prototype.toSorted.call(arrayLike));
 // toSorted() 메서드는this의 length 속성을 읽습니다 (toReversed, to Splcie도 똑같음)
 // [4, 5, undefined]
 //[2, 1, 0]
+
+let a6 = ['Kim', 'Lee', 'Hong'];
+// a6.sort(); // a6 = ['Hong', 'Kim', 'Lee']
+// a6.sort((a, b) => b - a); // ?
+// a6.sort((a, b) => b > a); // ?
+
+//-1, 0, 1 이 수직선에 있다고 생각하기
+a6.sort((a, b) => a < b ? 1 : -1);
+console.log("🚀 ~ a6:", a6);
+// a6.sort((a, b) => b > a ? 1 : (b < a ? -1 : 0));
