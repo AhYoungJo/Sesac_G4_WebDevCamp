@@ -5,7 +5,7 @@ const cube = n => n ** 3;
 const calcFns = [square, sqrt, cube];
 
 const result = arr.map(num =>
-    calcFns.reduce((acc, calcFn) => acc + calcFn(num), num),
+    calcFns.reduce((acc, calcFn) => calcFn(num), num),
 );
 
 console.log(result);
