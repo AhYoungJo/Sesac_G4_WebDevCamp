@@ -1,14 +1,39 @@
+const collection = {
+    clear() {
+        this.length = 0;
+    },
+    print() {
+        console.log(this);
+    },
+    remove() {
+        if (this.constructor === Stack) return this.pop();
+        if (this.constructor === Queue) return this.shift();
+    },
+    isEmpty() {
+        return this.length === 0;
+    },
+    peek() {
+        if (this.constructor === Stack) return this[this.length - 1];
+        if (this.constructor === Queue) return this[0];
+    },
+    poll() {
+        if (this.constructor === Stack) return this.pop();
+        if (this.constructor === Queue) return this.dequeue(0);
+    },
+    length() {
+        return this.length;
+    }
+};
+
 class Queue extends Array {
     constructor(...args) {
         super(...args);
     }
     enqueue(num) {
-        // this.push(num);
-        return this.unshift(num);
+        this.push(num);
     }
     dequeue() {
-        // return this.shift();
-        return this.pop();
+        return this.shift();
     }
 }
 class Stack extends Array {
@@ -18,14 +43,19 @@ class Stack extends Array {
     }
 }
 
+Object.assign(Stack.prototype, collection);
+Object.assign(Queue.prototype, collection);
+
+const stack = new Stack();
 const queue = new Queue();
-console.log(queue);
 queue.enqueue(3); // 추가하기
 queue.enqueue(2); // 추가하기
 console.log(queue);
-console.log(queue.dequeue()); // 추가한지 가장 오래된 - 먼저 들어간 - 하나 꺼내기
 
-const stack = new Stack([1, 2]); // or new Stack([1,2]); // ⇐⇒ (1,2)
+stack.push(1);
+stack.push(2);
+// stack.peek();
+console.log("🚀 ~ stack.peek():", stack.peek());
+console.log("🚀 ~ stack.length:", stack.length);
+
 console.log(stack);
-stack.push(3); // 추가하기
-console.log(stack.pop()); // 마지막에 추가된 하나 꺼내기
