@@ -13,16 +13,23 @@ const assert = require('assert');
 //     }
 // }
 
+// function keyPair(arr, N) {
+//     const map = new Map();
+//     for (let i = 0; i < arr.length; i++) {
+//         const a = N - arr[i];
+
+//         if (map.has(a)) {
+//             return [map.get(a), i];
+//         }
+//         map.set(arr[i], i);
+//     }
+// }
 
 function keyPair(arr, N) {
-    const map = new Map();
+    const cache = {};
     for (let i = 0; i < arr.length; i++) {
-        const a = N - arr[i];
-
-        if (map.has(a)) {
-            return [map.get(a), i];
-        }
-        map.set(arr[i], i);
+        if (arr[i] in cache) return [cache[arr[i]], i];
+        cache[N - arr[i]] = i;
     }
 }
 
