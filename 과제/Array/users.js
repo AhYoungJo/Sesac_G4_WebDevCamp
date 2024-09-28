@@ -25,11 +25,15 @@ users.addUser = function add(...user) {
 };
 
 users.removeUser = function remove(user) {
-    return this.filter(thisUser => thisUser != user);
+    // return this.filter(thisUser => thisUser != user);
+    return this.filter(({id}) => id != user.id);
 };
 
-users.changeUser = function change(...user) {
-    return this.with(...user);
+// users.changeUser = function change(...user) {
+//     return this.with(...user);
+//};
+users.changeUser = function change(before, after) {
+    return this.map(user => (user.id === before.id ? after : user));
 };
 
 // Reflect.setPrototypeOf(users, UsersMethod); 원본이 아예 달라짐 Error!
