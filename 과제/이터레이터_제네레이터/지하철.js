@@ -63,25 +63,37 @@ class Subway {
         let count = 0;
 
         //index 0까지 포함해서 전체는 총 48
+        //다시 순회해야 할 경우, 현재 위치와 전체길이 사이의 차를 이용
         let total =
             this.start <= this.end
                 ? this.end - this.start
                 : LINE2.length - this.start + this.end;
+        let isDone = false;
         return {
             next() {
-                let prev = LINE2[crt];
+                //이동횟수가 전체 이동 횟수를 넘어가면 종료
+                if (isDone) return { done: isDone };
+
+                //count(이동 횟수)가 이동해야하는 총 횟수를 넘을 경우 종료되기 때문에
+                //value에 담아줄 현재 위치를 먼저 할당
+                let current = LINE2[crt];
+
+                //다음 위치 구하기
                 count++;
                 crt++;
 
-                //종착지 넘어가면 초기화
+                //만약 다음 위치가 끝을 넘어가면 초기화
+                //실제로 다음 위치로 이동한 것은 아니므로 count값을 원래로 돌려놓음
                 if (crt >= LINE2.length) {
-                    count--;
+                    // count--;
                     crt = 0;
                 }
 
+                //종착 위치는 value에 들어가고 난 뒤 종료되도록
+                if (count > total) isDone = true;
                 return {
-                    value: prev,
-                    done: count > total,
+                    value: current,
+                    done: false,
                 };
             },
         };
@@ -89,21 +101,20 @@ class Subway {
 }
 
 const routes = new Subway('문래', '신림');
-// console.log(routes);
 assert.deepStrictEqual(
     [...routes],
-    ['문래', '대림', '구로디지털단지', '신대방'],
+    ['문래', '대림', '구로디지털단지', '신대방', '신림'],
 );
 
 const it1 = routes[Symbol.iterator]();
-assert.deepStrictEqual(it1.next(), {value: '문래', done: false});
-assert.deepStrictEqual(it1.next(), {value: '대림', done: false});
-assert.deepStrictEqual(it1.next(), {value: '구로디지털단지', done: false});
-assert.deepStrictEqual(it1.next(), {value: '신대방', done: false});
-assert.deepStrictEqual(it1.next(), {value: '신림', done: true});
+assert.deepStrictEqual(it1.next(), { value: '문래', done: false });
+assert.deepStrictEqual(it1.next(), { value: '대림', done: false });
+assert.deepStrictEqual(it1.next(), { value: '구로디지털단지', done: false });
+assert.deepStrictEqual(it1.next(), { value: '신대방', done: false });
+assert.deepStrictEqual(it1.next(), { value: '신림', done: false });
+assert.deepStrictEqual(it1.next(), { done: true });
 
 const routes2 = new Subway('구로디지털단지', '성수');
-// console.log(routes2);
 assert.deepStrictEqual(
     [...routes2],
     [
