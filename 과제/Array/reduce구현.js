@@ -11,15 +11,18 @@ const assert = require('assert');
 //currentValue는 두 번째와 같습니다.
 
 const reduce = (arr, fn, initValue) => {
-    const isValid_initValue = initValue !== undefined && initValue !== null;
+    // const isValid_initValue = initValue != null;
 
     //초기 acc 값: initValue
     //initValue가 undefined일 때: 첫 번째 요소
-    let acc = isValid_initValue ? initValue : arr[0];
+    // let acc = initValue || arr[0];
 
     //초기 start 값: 첫 번째 요소
     //initValue가 undefined일 때: 두 번째 요소
-    const start = isValid_initValue ? 0 : 1;
+    // const start = (initValue && 0) || 1;
+
+    let start = 0;
+    let acc = initValue ?? (start++, arr[0]);
 
     for (let i = start; i < arr.length; i++) {
         acc = fn(acc, arr[i]);

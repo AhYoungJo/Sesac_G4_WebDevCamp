@@ -13,48 +13,52 @@ assert.deepStrictEqual(users.mapBy('name'), ['Hing', 'Lee', 'Kim']);
 
 //2)findBy()
 Array.prototype.findBy = function findBy(key, value) {
-    return this.filter(obj => obj[key] === value);
+    return this.find(obj => obj[key] === value);
 };
-assert.deepStrictEqual(users.findBy('name', 'Kim'), [kim]);
+assert.deepStrictEqual(users.findBy('name', 'Kim'), kim);
 
 //3)filterBy()
-Array.prototype.filterBy = function filterBy(key, value, boolean) {
+Array.prototype.filterBy = function filterBy(key, value, isInclude = false) {
     return this.filter(obj =>
         //true: name에 i가 있는 값만 남기고 싶을 때
         //false: name에 i가 없는 값만 남기고 싶을 때
-        boolean == null
-            ? obj[key] === value
-            : boolean
-                ? String(obj[key]).includes(value)
-                : !String(obj[key]).includes(value),
+        // isInclude == null
+        //     ? obj[key] === value
+        //     : isInclude
+        //     ? String(obj[key]).includes(value)
+        //     : !String(obj[key]).includes(value),
+        isInclude ? obj[key]?.includes(value) : obj[key] === value,
     );
 };
 assert.deepStrictEqual(users.filterBy('id', 2), [kim]);
 assert.deepStrictEqual(users.filterBy('name', 'i', true), [hong, kim]);
 
 //4)rejectBy()
-Array.prototype.rejectBy = function rejectBy(key, value, boolean) {
+Array.prototype.rejectBy = function rejectBy(key, value, isInclude = false) {
     return this.filter(obj =>
         //true: name에 i가 있는 값만 지우고 싶을 때
         //false: name에 i가 없는 값만 지우고 싶을 때
-        boolean == null
-            ? obj[key] !== value
-            : boolean
-                ? !String(obj[key]).includes(value)
-                : String(obj[key]).includes(value),
+        // boolean == null
+        //     ? obj[key] !== value
+        //     : boolean
+        //     ? !String(obj[key]).includes(value)
+        //     : String(obj[key]).includes(value),
+        isInclude ? !obj[key]?.includes(value) : obj[key] !== value,
     );
 };
 assert.deepStrictEqual(users.rejectBy('id', 2), [hong, lee]);
 assert.deepStrictEqual(users.rejectBy('name', 'i', true), [lee]);
-assert.deepStrictEqual(users.rejectBy('name', 'i', false), [hong, kim]);
 
 //5) sortBy()
 Array.prototype.sortBy = function sortBy(sortingCriteria) {
-    const [key, desc] = sortingCriteria.split(':');
+    const [key, direction = 'asc'] = sortingCriteria.split(':');
+    const dir = direction === 'desc' ? -1 : 1;
     return this.toSorted((obj1, obj2) => {
-        if (obj1[key] > obj2[key]) return desc ? -1 : 1;
-        if (obj1[key] < obj2[key]) return desc ? 1 : -1;
-        if (obj1[key] === obj2[key]) return 0;
+        obj1[key] > obj2[key] ? dir : -dir;
+
+        // if (obj1[key] > obj2[key]) return direction ? -1 : 1;
+        // if (obj1[key] < obj2[key]) return direction ? 1 : -1;
+        // if (obj1[key] === obj2[key]) return 0;
     });
 };
 assert.deepStrictEqual(users.sortBy('name:desc'), [lee, kim, hong]);
@@ -82,6 +86,7 @@ Object.defineProperty(Array.prototype, 'lastObject', {
         return this.at(-1);
     },
     set: function (obj) {
+        //with 쓰면 error
         this[this.length - 1] = obj;
         // return this.with(-1, obj);
     },

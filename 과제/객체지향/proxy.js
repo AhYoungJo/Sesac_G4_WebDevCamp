@@ -1,94 +1,63 @@
 const assert = require('assert');
 
+// class Emp {
+//     firstName; //undefined
+//     lastName; //undefined
+// }
+// const HONG = new Emp();
+
 const handler = {
     get(target, prop) {
         if (prop === 'fullName') {
             target.lastName = `${target.lastName}`.toUpperCase();
             return `${target.firstName} ${target.lastName}`;
-        } else {
-            return target[prop];
         }
+        return target[prop];
     },
     set(target, prop, value) {
         if (prop === 'fullName') {
             const [first, last] = value.split(' ');
-            // if (value.split(' ').length > 1) {
-            //     target.firstName = first;
-            //     target.lastName = last.toUpperCase();
-            !value.includes(' ')
-                ? [first, last]
-                : [target.firstName, last];
+            value.split(' ').length > 1
+                ? ((target.firstName = first),
+                    (target.lastName = last.toUpperCase()))
+                : (target.lastName = first.toUpperCase());
         } else {
             target[prop] = value;
         }
-        return target;
+        return true;
     },
 };
-// class Emp {
-//     constructor() {
-//         this.firstName;
-//         this.lastName;
-//         return new Proxy(this, {
-//             get(target, prop) {
-//                 console.log(target);
-//                 if (prop === 'fullName') {
-//                     target.lastName = `${target.lastName}`.toUpperCase();
-//                     return `${target.firstName} ${target.lastName}`;
-//                 } else {
-//                     return target[prop];
-//                 }
-//             },
-//             set(target, prop, value) {
-//                 if (prop === 'fullName') {
-//                     const [first, last] = value.split(' ');
-//                     // if (value.split(' ').length > 1) {
-//                     //     target.firstName = first;
-//                     //     target.lastName = last.toUpperCase();
-//                     !value.includes(' ')
-//                         ? [first, last.toUpperCase()]
-//                         : [target.firstName, last.toUpperCase()];
-//                 } else {
-//                     target[prop] = value;
-//                 }
-//                 return target;
-//             }
-//         });
-//     }
-// }
-// const HONG = new Emp();
+// const hong = new Proxy(HONG, handler);
 
 class Emp {
-    firstName;
-    lastName;
-    get() {
-        console.log(this);
-    };
+    firstName; //undefined
+    lastName; //undefined
     constructor() {
         return new Proxy(this, {
-            get(target, prop, receiver) {
-                if (prop === "fullName")
-                    return `${target.firstName} ${target.lastName}`;
-                if (prop === "firstName") return `${target.firstName}`;
-                if (prop === "lastName") return `${target.lastName}`;
-            },
-            set(target, prop, val, receiver) {
-                if (prop === "fullName") {
-                    let [f, l] = val.split(" ");
-                    if (l === undefined) {
-                        target.lastName = f.toUpperCase();
-                    } else {
-                        target.firstName = f;
-                        target.lastName = l.toUpperCase();
-                    }
+            get(target, prop) {
+                if (prop === 'fullName') {
+                    return `${target.firstName
+                        } ${target.lastName?.toUpperCase()}`;
                 }
+                return target[prop];
+            },
+            set(target, prop, value) {
+                if (prop === 'fullName')
+                    // const [first, last] = value.split(' ');
+                    // value.split(' ').length > 1
+                    //     ? ((target.firstName = first),
+                    //       (target.lastName = last.toUpperCase()))
+                    //     : (target.lastName = first.toUpperCase());
+                    [target.firstName, target.lastName] = value.includes(' ')
+                        ? value.split(' ')
+                        : [target.firstName, value];
+                else target[prop] = value;
             },
         });
     }
 }
 
-// const hong = new Proxy(HONG, handler);
 const hong = new Emp();
-console.log("Dfd", hong.get);
 
 hong.fullName = 'Kildong Hong';
 console.log("ㅇㄹ", hong.fullName);

@@ -1,20 +1,22 @@
-class Queue extends Array {
+class Queue {
+    #arr = [];
     constructor(...args) {
-        super(...args);
+        this.#arr = [...args.flat(1)];
     }
-    enqueue(num) {
-        // this.push(num);
-        return this.unshift(num);
+    toString() {
+        return JSON.stringify(this.#arr);
+    }
+    enqueue(...args) {
+        this.#arr.push(...args);
+        return this;
     }
     dequeue() {
-        // return this.shift();
-        return this.pop();
+        this.#arr.shift();
+        return this;
     }
 }
 
 const queue = new Queue();
-console.log(queue);
-queue.enqueue(3); // 추가하기
-queue.enqueue(2); // 추가하기
-console.log(queue);
-console.log(queue.dequeue()); // 추가한지 가장 오래된 - 먼저 들어간 - 하나 꺼내기
+queue.enqueue(3).enqueue(2).enqueue(1); // 추가하기
+queue.dequeue(); // 추가한지 가장 오래된 - 먼저 들어간 - 하나 꺼내기
+console.log(queue.toString());

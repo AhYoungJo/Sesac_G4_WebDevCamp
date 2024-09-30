@@ -1,41 +1,51 @@
 const assert = require('assert');
 
-function deleteObjFromArray(arr, key, val) {
-    const findId = (key, val) => obj => obj[key] === val;
-    const startIdx = arr.findIndex(findId(key, val));
-    return startIdx >= 0 ? arr.toSpliced(startIdx, 1) : arr;
-}
+// function deleteObjFromArray(arr, key, val) {
+//     const findId = (key, val) => obj => obj[key] === val;
+//     const startIdx = arr.findIndex(findId(key, val));
+//     return startIdx >= 0 ? arr.toSpliced(startIdx, 1) : arr;
+// }
 
-function deleteArray(arr, ...args) {
-    //시작하는 Index의 default: 0
-    //끝나는 지점 default: 배열 길이
-    //MDN: 만약 deleteCount가 생략되거나, deleteCount가 start 인덱스 뒤의 요소의 개수보다 크거나 같으면 배열의 시작부터 끝까지 모든 요소가 삭제됩니다.
-    let [startIdx = 0, deleteCount = arr.length] = [...args];
+// function deleteArray(arr, ...args) {
+//     if (!arr || !Array.isArray(arr)) return [];
+//     //시작하는 Index의 default: 0
+//     //끝나는 지점 default: 배열 길이
+//     //MDN: 만약 deleteCount가 생략되거나, deleteCount가 start 인덱스 뒤의 요소의 개수보다 크거나 같으면 배열의 시작부터 끝까지 모든 요소가 삭제됩니다.
+//     let [startIdx = 0, deleteCount = arr.length] = [...args];
 
-    //만약 startIdx가 객체의 key면 key의 val값과 일치하는 객체의 index검색
+//     //만약 startIdx가 객체의 key면 key의 val값과 일치하는 객체의 index검색
 
-    //v1. 중복 객체 없다 가정하고 1개만 삭제하는 조건문
-    // if (typeof startIdx === 'string') {
-    //     const key = startIdx;
-    //     const val = deleteCount;
-    //     return deleteObjFromArray(arr, key, val);
-    // }
+//     //v1. 중복 객체 없다 가정하고 1개만 삭제하는 조건문
+//     // if (typeof startIdx === 'string') {
+//     //     const key = startIdx;
+//     //     const val = deleteCount;
+//     //     return deleteObjFromArray(arr, key, val);
+//     // }
 
-    //v2. 동일한 객체가 여러개일 수 있다 가정하고, 있다면 재귀하는 조건문
-    if (typeof startIdx === 'string') {
-        const key = startIdx;
-        const val = deleteCount;
-        let newArr;
-        function deleteByKey(arr, key, val) {
-            newArr = deleteObjFromArray(arr, key, val);
-            if (newArr.length === arr.length) return newArr;
-            return deleteByKey(newArr, key, val);
-        }
-        return deleteByKey(arr, key, val);
+//     //v2. 동일한 객체가 여러개일 수 있다 가정하고, 있다면 재귀하는 조건문
+//     if (typeof startIdx === 'string') {
+//         const key = startIdx;
+//         const val = deleteCount;
+//         let newArr;
+//         function deleteByKey(arr, key, val) {
+//             newArr = deleteObjFromArray(arr, key, val);
+//             if (newArr.length === arr.length) return newArr;
+//             return deleteByKey(newArr, key, val);
+//         }
+//         return deleteByKey(arr, key, val);
+//     }
+
+//     //toSpliced 메서드의 deleteCount보다 -1 만큼 제거
+//     return arr.toSpliced(startIdx, deleteCount - 1);
+// }
+
+function deleteArray(arr, startOrKey, endOrValue = Infinity) {
+    if (!arr || Array.isArray(arr)) return [];
+    // end = end ?? arr.length - 1;
+    if (typeof startOrKey === 'number') {
+        return arr.filter((_, idx) => idx < startOrKey || idx > endOrValue);
     }
-
-    //toSpliced 메서드의 deleteCount보다 -1 만큼 제거
-    return arr.toSpliced(startIdx, deleteCount - 1);
+    return arr.filter(a => a[startOrKey] === endOrValue);
 }
 
 const arr = [1, 2, 3, 4];
