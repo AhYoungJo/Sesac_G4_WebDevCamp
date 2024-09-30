@@ -70,7 +70,7 @@ class Subway {
                 //이동횟수가 전체 이동 횟수를 넘어가면 종료
                 if (isDone) return { done: isDone };
 
-                //count(이동 횟수)가 이동해야하는 총 횟수를 넘을 경우 종료되기 때문에
+                //다음 위치를 구하면서 crt랑 count값이 바뀌기 때문에 미리 값 저장
                 //value에 담아줄 현재 위치를 먼저 할당
                 current = LINE2[crt];
 
