@@ -51,7 +51,7 @@ assert.deepStrictEqual(users.rejectBy('name', 'i', false), [hong, kim]);
 //5) sortBy()
 Array.prototype.sortBy = function sortBy(sortingCriteria) {
     const [key, desc] = sortingCriteria.split(':');
-    this.toSorted((obj1, obj2) => {
+    return this.toSorted((obj1, obj2) => {
         if (obj1[key] > obj2[key]) return desc ? -1 : 1;
         if (obj1[key] < obj2[key]) return desc ? 1 : -1;
         if (obj1[key] === obj2[key]) return 0;
@@ -79,10 +79,11 @@ Object.defineProperty(Array.prototype, 'firstObject', {
 // //7) lastObject()
 Object.defineProperty(Array.prototype, 'lastObject', {
     get: function () {
-        return this[this.length - 1];
+        return this.at(-1);
     },
     set: function (obj) {
         this[this.length - 1] = obj;
+        // return this.with(-1, obj);
     },
 });
 assert.deepStrictEqual(users.firstObject, hong);
