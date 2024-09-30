@@ -52,23 +52,19 @@ const LINE2 = [
 ];
 class Subway {
     constructor(start, end) {
-        [this.start, this.end] = [
-            LINE2.findIndex(station => station === start),
-            LINE2.findIndex(station => station === end),
-        ];
+        [this.start, this.end] = [LINE2.indexOf(start), LINE2.indexOf(end)];
     }
     [Symbol.iterator]() {
-        //도착지 index가 더 작다는 건 한 바퀴를 더 돌아야 한다는 것
         let crt = this.start;
+        let current = '';
         let count = 0;
-
+        let isDone = false;
         //index 0까지 포함해서 전체는 총 48
         //다시 순회해야 할 경우, 현재 위치와 전체길이 사이의 차를 이용
         let total =
             this.start <= this.end
                 ? this.end - this.start
                 : LINE2.length - this.start + this.end;
-        let isDone = false;
         return {
             next() {
                 //이동횟수가 전체 이동 횟수를 넘어가면 종료
@@ -76,16 +72,14 @@ class Subway {
 
                 //count(이동 횟수)가 이동해야하는 총 횟수를 넘을 경우 종료되기 때문에
                 //value에 담아줄 현재 위치를 먼저 할당
-                let current = LINE2[crt];
+                current = LINE2[crt];
 
                 //다음 위치 구하기
                 count++;
                 crt++;
 
                 //만약 다음 위치가 끝을 넘어가면 초기화
-                //실제로 다음 위치로 이동한 것은 아니므로 count값을 원래로 돌려놓음
                 if (crt >= LINE2.length) {
-                    // count--;
                     crt = 0;
                 }
 
