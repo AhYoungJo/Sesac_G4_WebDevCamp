@@ -5,16 +5,11 @@ const B = [1, 22, 3, 44, 5];
 const C = [11, 222, 3, 4, 555];
 
 function intersect(A, B) {
-    //중복제거
-    const a = new Set(A);
-    const b = new Set(B);
-    return [...a].filter(v => b.has(v));
+    return [...new Set(A.filter((v) => B.includes(v)))];
 }
 
 function diff(A, B) {
-    const a = new Set(A);
-    const b = new Set(B);
-    return [...a].filter(v => !b.has(v));
+    return [...new Set(A.filter((v) => !B.includes(v)))];
 }
 
 function union(A, B) {
