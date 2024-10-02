@@ -4,20 +4,27 @@ const A = [1, 2, 3, 4, 5, 3];
 const B = [1, 22, 3, 44, 5];
 const C = [11, 222, 3, 4, 555];
 
+// function intersect(A, B) {
+//     return [...new Set(A.filter((v) => B.includes(v)))];
+// }
+
+//중복을 먼저 제거한 뒤 filter 돌리기
 function intersect(A, B) {
-    return [...new Set(A.filter((v) => B.includes(v)))];
+    return [...new Set(A)].filter((v) => B.includes(v));
 }
 
+//중복을 먼저 제거한 뒤 filter 돌리기
 function diff(A, B) {
-    return [...new Set(A.filter((v) => !B.includes(v)))];
+    return [...new Set(A)].filter((v) => !B.includes(v));
 }
 
 function union(A, B) {
-    const a = new Set(A);
-    for (const b of B) {
-        a.add(b);
-    }
-    return [...a];
+    // const a = new Set(A);
+    // for (const b of B) {
+    //     a.add(b);
+    // }
+    // return [...a];
+    return [...new Set([...A, ...B])];
 }
 
 assert.deepStrictEqual(intersect(A, B), [1, 3, 5]);
