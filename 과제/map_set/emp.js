@@ -19,8 +19,10 @@ const deptMap = new Map();
 for (const dept of depts) deptMap.set(dept.id, dept);
 
 
-const empMap = new Map();
-for (const emp of emps) empMap.set(emp.id, emp);
+const empMap = new Map(depts.map(dept => [emps[dept.id], dept]));
+console.log(empMap);
+// const empMap = new Map();
+// for (const emp of emps) empMap.set(emp.id, emp);
 
 const empDept = new Map();
 // emps.map(({ id, name, dept }) =>
