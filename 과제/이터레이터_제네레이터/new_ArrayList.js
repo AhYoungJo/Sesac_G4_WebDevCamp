@@ -1,31 +1,42 @@
 class Collection {
-    #arr = [];
+    #list = [];
     constructor(...args) {
-        this.#arr = [...args.flat(1)];
+        this.#list = [...args.flat(1)];
     }
-    get _arr() {
-        return this.#arr;
+    // [Symbol.iterator]() {
+    //     let idx = 0;
+    //     const arr = this.#list;
+    //     return {
+    //         next() {
+    //             return { value: arr[idx++], done: idx > arr.length };
+    //         },
+    //     };
+    // }
+
+    *[Symbol.iterator]() {
+        for (let i = 0; i < this.#list.length; i++) {
+            yield this.#list[i];
+        }
+    }
+
+    get _list() {
+        return this.#list;
     }
     get size() {
-        return this.#arr.length;
+        return this.#list.length;
     }
     clear() {
-        this.#arr.length = 0;
+        this.#list.length = 0;
     }
     get isStack() {
-        return this.#arr.constructor.name === 'Stack';
+        return this.#list.constructor.name === 'Stack';
     }
     get isEmpty() {
-        return this.#arr.length === 0;
+        return this.#list.length === 0;
     }
     get peek() {
         // if (this.#arr.constructor === Stack) return this.#arr.at(-1);
         // if (this.#arr.constructor === Queue) return this.#arr[0]; -1 : 0);
-    }
-    get poll() {
-        // if (this.#arr.constructor === Stack) return this.#arr.pop();
-        // if (this.#arr.constructor === Queue) return this.dequeue();
-        return this.remove;
     }
     print() {
         // console.log(this);
@@ -33,22 +44,25 @@ class Collection {
             `${this.constructor.name}(${this.size}) ${this.toString()}`,
         );
     }
+    *iterator() {
+
+    }
     toString() {
-        return JSON.stringify(this.#arr);
+        return JSON.stringify(this.#list);
     }
     remove() {
         // if (this.#arr.constructor === Stack) return this.#arr.pop();
         // if (this.#arr.constructor === Queue) return this.#arr.shift();
-        return this.isStack ? this.#arr.pop() : this.#arr.shift;
+        return this.isStack ? this.#list.pop() : this.#list.shift;
     }
     toArray() {
-        return [...this.#arr];
+        return [...this.#list];
     }
 }
 
 class ArrayList extends Collection {
-    arrayToList() {}
-    listToArray() {}
+    arrayToList() { }
+    listToArray() { }
 }
 
 const alist = new ArrayList([1, 2]); // alist.toString() ⇒ { value: 1, rest: { value: 2 } }
