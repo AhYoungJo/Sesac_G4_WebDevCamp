@@ -20,83 +20,83 @@ const kim = {
     zwm: new WeakMap([[hong, arr]]), //WeakMap { <items unknown> }
 };
 
+//내가 찾은 방법:
+// const ctr = {
+//     String: obj => String(obj),
+//     Array: obj => obj.map(value => typeof value === 'object' ? deepCopy(value) : value),
+//     Object: obj => {
+//         let copy = {};
+//         Reflect.ownKeys(obj).forEach(k => {
+//             // console.log("Object");
+//             if (obj[k] === 'null') copy[k] = k;
+//             copy[k] = typeof obj[k] === "object" && obj[k] != null ? deepCopy(obj[k]) : obj[k];
+//             // copy[k] = obj[k];
+//         });
+//         return copy;
+//     },
+//     Map: obj => new Map([...obj].map((value) => typeof value === "object" ? deepCopy(value) : value)),
+//     Set: obj => new Set([...obj].map((key) => typeof key === "object" ? deepCopy(key) : key)),
+//     WeakMap: () => new WeakMap(),
+//     WeakSet: () => new WeakSet()
+// };
 
+// function deepCopy(obj) {
+//     let copy = {};
+//     // // console.log('------------------------');
+//     if (obj != null && ctr[obj.constructor.name]) {
+//         copy = ctr[obj.constructor.name](obj);
+//     }
+//     return copy;
+// };
 
-function copyObject(fn) {
-    // let newObj = {};
-    return function B(obj) {
-        let newObj = {};
-        Object.keys(kim).forEach(key => {
-            if (typeof obj[key] === "object" && obj[key] !== null) {
-                if (Array.isArray(obj[key])) {
-                    newObj[key] = Array.from(obj[key]);
-                } else if (obj[key] instanceof Map) {
-                    // newObj[key] = new Map(Array.from(obj[key]));
-                    newObj[key] = new Map(obj[key].entries());
-                } else if (obj[key] instanceof Set) {
-                    newObj[key] = new Set(obj[key].keys());
-                } else if (obj[key] instanceof WeakMap) {
-                    newObj[key] = new WeakMap(Array.from(obj[key]));
-                } else if (obj[key] instanceof WeakSet) {
-                    newObj[key] = new WeakSet(Array.from(obj[key]));
-                } else {
-                    newObj[key] = fn(obj[key]);
-                }
-            } else {
-                newObj[key] = obj[key];
-            }
-        });
-        Object.getOwnPropertySymbols(kim).forEach(symbol =>
-            newObj[symbol] = obj[symbol]
-        );
+//스터디원 조언으로 찾은 방법:
+function deepCopy(data) {
+    // // console.log('------------------------');
 
-        return newObj;
-    };
-}
-
-const deepCopyObject = copyObject(function A(obj) {
-    let newObj = {};
-    for (const key in obj) {
-        if (typeof obj[key] === "object") {
-            newObj[key] = A(obj[key]);
-        } else {
-            newObj[key] = obj[key];
-        }
+    if (data == null || data instanceof WeakMap || data instanceof WeakSet) {
+        return data;
     }
-    return newObj;
-});
+
+    let copy = new data.constructor();
+
+    if (data != null && data instanceof Map) {
+        // [...data.entries()].forEach(([key, value]) => typeof key === 'object' ? deepCopy(value) : copy.set(value));
+        [...data.entries()].forEach(([_k, _v]) => copy.set(deepCopy(_k), deepCopy(_v)));
+        return copy;
+    }
+    if (data != null && data instanceof Set) {
+        return copy.add([...data].forEach((key) => typeof key === 'object' ? deepCopy(key) : key));
+    }
+
+    if (data != null && data instanceof Array) {
+        return data.map(value => typeof value === 'object' ? deepCopy(value) : value);
+    }
+
+    let copied = {};
+    Reflect.ownKeys(data).forEach(k => {
+        copied[k] = typeof data[k] === 'object' ? deepCopy(data[k]) : data[k];
+
+    });
+
+    return copied;
+};
 
 
-const newKim = deepCopyObject(kim);
+
+const newKim = deepCopy(kim);
+// console.log(newKim);
+// console.log(kim);
+
 assert.deepStrictEqual(newKim, kim, 'deepCopy equal fail!');
 newKim.addr = 'Daegu';
 newKim.oo.name = 'Kim';
 assert.notDeepStrictEqual(newKim, kim, 'Not Valid Deep Copy!');
+newKim.arr[0] = 100;
+newKim.arr[3].aid = 200;
+newKim.arr[4][1] = 300;
+newKim.oo.addr.city = 'Daejeon';
+// console.log(newKim);
+// console.log(kim);
+assert.notStrictEqual(kim.arr[4][1], newKim.arr[4][1], 'pass2: 다르지 않아요!');
+assert.notStrictEqual(kim.oo.addr.city, newKim.oo.addr.city, 'Not Pass3: city가 다르지 않아요!');
 
-
-
-
-//------------------------------------------------------------
-// const deepCopyKim = deepCopyObject(kim);
-// deepCopyKim.addr.city = "Seoul";
-// console.log("🚀 ~ deepCopyKim.addr.city:", deepCopyKim.addr.city);
-// console.log(
-//     "🚀 ~ deepCopyKim.addr.city !== kim.addr.city: ",
-//     deepCopyKim.addr.city !== kim.addr.city
-// );
-
-
-// function shallowCopyObject(obj) {
-//     let newObj = {};
-//     for (let key in obj) {
-//         newObj[key] = obj[key];
-//     }
-//     return newObj;
-// }
-// const shallowCopyKim = shallowCopyObject(kim);
-// shallowCopyKim.addr = "Seoul";
-// console.log("🚀 ~ newObj:", shallowCopyKim.addr);
-// console.log(
-//     "🚀 ~ shallowCopyKim.addr !== kim.addr: ",
-//     shallowCopyKim.addr !== kim.addr
-// ); // //true

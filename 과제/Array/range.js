@@ -1,8 +1,9 @@
 const assert = require('assert');
 function range(s, e, step = s > e ? -1 : 1) {
     if (step === 0 || s === e) return [s];
-    if (s > e && step > 0) return [];
-    if (s < e && step < 0) return [];
+    // if (s > e && step > 0) return [];
+    // if (s < e && step < 0) return [];
+    if ((s - e) * step > 0) return [];
 
     if (e == null) {
         if (s > 0) {
@@ -14,14 +15,8 @@ function range(s, e, step = s > e ? -1 : 1) {
     }
 
     let result = [];
-    if (s > e && step < 0) {
-        for (let i = s; i >= e; i += step) {
-            result.push(i);
-        }
-        return result;
-    }
 
-    for (let i = s; i <= e; i += step) {
+    for (let i = s; step > 0 ? i <= e : i >= e; i += step) {
         result.push(i);
     }
     return result;
