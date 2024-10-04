@@ -18,9 +18,7 @@ const emps = [
 const deptMap = new Map();
 for (const dept of depts) deptMap.set(dept.id, dept);
 
-
 const empMap = new Map(depts.map(dept => [emps[dept.id], dept]));
-console.log(empMap);
 // const empMap = new Map();
 // for (const emp of emps) empMap.set(emp.id, emp);
 
@@ -41,7 +39,6 @@ for (const emp of emps) {
     empDept.set(emp, dept);
 };
 
-// console.log(empDept);
 
 //참조를 유지하면서 동시에 dept를 분리하는 방법을 모르곘음
 assert.deepStrictEqual(empDept.get(kim).dname, '개발팀');
