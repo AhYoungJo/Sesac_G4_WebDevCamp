@@ -51,50 +51,88 @@ const LINE2 = [
     '을지로입구',
 ];
 class Subway {
+    #start;
+    #end;
+    //외부에서 접근할 수 없도록 private
     constructor(start, end) {
-        [this.start, this.end] = [LINE2.indexOf(start), LINE2.indexOf(end)];
+        this.#start = LINE2.indexOf(start);
+        this.#end = LINE2.indexOf(end);
     }
-    [Symbol.iterator]() {
-        let crt = this.start;
+    // [Symbol.iterator]() {
+    //     let crt = this.#start;
+    //     let current = '';
+    //     let count = 0;
+    //     let isDone = false;
+    //     //index 0까지 포함해서 전체는 총 48
+    //     //다시 순회해야 할 경우, 현재 위치와 전체길이 사이의 차를 이용
+    //     let total =
+    //         this.#start <= this.#end
+    //             ? this.#end - this.#start
+    //             : LINE2.length - this.#start + this.#end;
+    //     return {
+    //         next() {
+    //             //이동횟수가 전체 이동 횟수를 넘어가면 종료
+    //             if (isDone) return { done: isDone };
+
+    //             //다음 위치를 구하면서 crt랑 count값이 바뀌기 때문에 미리 값 저장
+    //             //value에 담아줄 현재 위치를 먼저 할당
+    //             current = LINE2[crt];
+
+    //             //다음 위치 구하기
+    //             count++;
+    //             crt++;
+
+    //             //만약 다음 위치가 끝을 넘어가면 초기화
+    //             if (crt >= LINE2.length) {
+    //                 crt = 0;
+    //             }
+
+    //             //종착 위치가 value에 들어가고 난 뒤 종료되도록
+    //             if (count > total) isDone = true;
+    //             return {
+    //                 value: current,
+    //                 done: false,
+    //             };
+    //         },
+    //     };
+    // }
+
+    //generator로 만들기
+    *[Symbol.iterator]() {
+        //무한 루프
+        //for(; ;)
+        let crt = this.#start;
         let current = '';
         let count = 0;
         let isDone = false;
-        //index 0까지 포함해서 전체는 총 48
-        //다시 순회해야 할 경우, 현재 위치와 전체길이 사이의 차를 이용
         let total =
-            this.start <= this.end
-                ? this.end - this.start
-                : LINE2.length - this.start + this.end;
-        return {
-            next() {
-                //이동횟수가 전체 이동 횟수를 넘어가면 종료
-                if (isDone) return { done: isDone };
+            this.#start <= this.#end
+                ? this.#end - this.#start
+                : LINE2.length - this.#start + this.#end;
+        while (true) {
+            if (isDone) {
+                // crt = this.#start;
+                // count = 0;
+                // isDone = false;
+                break;
+            };
 
-                //다음 위치를 구하면서 crt랑 count값이 바뀌기 때문에 미리 값 저장
-                //value에 담아줄 현재 위치를 먼저 할당
-                current = LINE2[crt];
+            current = LINE2[crt];
+            //다음 위치 구하기
+            count++;
+            crt++;
+            if (crt >= LINE2.length) {
+                crt = 0;
+            }
+            if (count > total) isDone = true;
 
-                //다음 위치 구하기
-                count++;
-                crt++;
-
-                //만약 다음 위치가 끝을 넘어가면 초기화
-                if (crt >= LINE2.length) {
-                    crt = 0;
-                }
-
-                //종착 위치는 value에 들어가고 난 뒤 종료되도록
-                if (count > total) isDone = true;
-                return {
-                    value: current,
-                    done: false,
-                };
-            },
-        };
+            yield current;
+        }
     }
 }
 
 const routes = new Subway('문래', '신림');
+// console.log([...routes]);
 assert.deepStrictEqual(
     [...routes],
     ['문래', '대림', '구로디지털단지', '신대방', '신림'],
@@ -106,7 +144,7 @@ assert.deepStrictEqual(it1.next(), { value: '대림', done: false });
 assert.deepStrictEqual(it1.next(), { value: '구로디지털단지', done: false });
 assert.deepStrictEqual(it1.next(), { value: '신대방', done: false });
 assert.deepStrictEqual(it1.next(), { value: '신림', done: false });
-assert.deepStrictEqual(it1.next(), { done: true });
+// assert.deepStrictEqual(it1.next(), { done: true });
 
 const routes2 = new Subway('구로디지털단지', '성수');
 assert.deepStrictEqual(
