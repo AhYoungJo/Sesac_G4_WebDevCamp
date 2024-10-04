@@ -1,3 +1,7 @@
+//직원이라던지 변하지 않는 고정된, 대량의 데이터는 보통 Map으로 저장하는데,
+//Map에 없는 기능들을 확장하기 위해 class Cashe로 감싼다.
+//그리고 이 데이터들을 하나씩 꺼내올 떄 이터레이터를 적용한다.
+
 class Stack {
     #arr = [];
     constructor(...args) {
@@ -9,7 +13,7 @@ class Stack {
         const arr = this.#arr;
         return {
             next() {
-                return {value: arr[idx++], done: idx > arr.length};
+                return { value: arr[idx++], done: idx > arr.length };
             },
         };
     }
