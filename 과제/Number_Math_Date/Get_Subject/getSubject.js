@@ -39,7 +39,7 @@ const getMath = Throttle(getNextWeekExt(), 500);
 const clickHandlerForKorean = () => getKorean(spanKor);
 const clickHandlerForMath = () => getMath(spanMath);
 const changeHandlerForSearch = Throttle(
-    event => console.log(event.target.value),
+    event => console.log(new Date(), 'search>>', event.target.value),
     500,
 );
 
