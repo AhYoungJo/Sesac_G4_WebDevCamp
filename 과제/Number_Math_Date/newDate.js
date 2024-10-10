@@ -24,8 +24,6 @@ const getRandomFiveDates = () => {
         .map(d => d.toISOString().slice(0, 10));
 };
 
-console.log(getRandomFiveDates());
-
 //3)
 const dayOfNextYear = () => {
     const today = new Date();
