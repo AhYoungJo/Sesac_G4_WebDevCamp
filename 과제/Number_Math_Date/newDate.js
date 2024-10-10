@@ -1,6 +1,6 @@
 //1)
-Date.UTC(1970, 0, 2); // 86400000 (1970년 1월 2일 00:00:00 UTC)
-Date.parse(1970, 0, 2); // 54000000 (1970년 1월 1일 15:00:00 UTC 환산 후 밀리초 계산)
+Date.UTC(1970, 0, 2); // 정답, 86400000 (1970년 1월 2일 00:00:00 UTC)
+Date.parse(1970, 0, 2); // 오답, 54000000 (1970년 1월 1일 15:00:00 UTC 환산 후 밀리초 계산)
 
 //2)
 const getRandomDay = () => {
@@ -10,7 +10,8 @@ const getRandomDay = () => {
 };
 
 const getRandomFiveDates = () => {
-    const [year, month] = [new Date().getFullYear(), new Date().getMonth()];
+    const day = new Date();
+    const [year, month] = [day.getFullYear(), day.getMonth()];
     let randomDates = [];
     for (let i = 1; i <= 5; i += 1) {
         let random = Math.floor(Math.random() * getRandomDay() + 1);
@@ -23,6 +24,26 @@ const getRandomFiveDates = () => {
         .map(d => d.toISOString().slice(0, 10));
 };
 
-//내년(2025년)의 오늘(6월 29일)의 요일을 출력하시오.
+console.log(getRandomFiveDates());
+
+//3)
+const dayOfNextYear = () => {
+    const today = new Date();
+    const day = new Date(
+        today.getFullYear() + 1,
+        today.getMonth(),
+        today.getDate(),
+    ).getDay();
+
+    return '일월화수목금토'[day];
+};
 
 //오늘(10월 7일)로 부터 100일 후의 날짜는?
+const after100 = () => {
+    const today = new Date();
+    return new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() + 100,
+    );
+};
