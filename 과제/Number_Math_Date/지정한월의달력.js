@@ -28,5 +28,3 @@ const getCalendar = date => {
 
     return calendar.map(line => line.join(' ')).join('\n');
 };
-
-console.log(getCalendar('2024-10-28'));
