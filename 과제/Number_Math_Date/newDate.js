@@ -25,7 +25,7 @@ const getRandomFiveDates = () => {
 };
 
 //3)
-const dayOfNextYear = () => {
+const getDayOfNextYear = () => {
     const today = new Date();
     const day = new Date(
         today.getFullYear() + 1,
@@ -36,8 +36,8 @@ const dayOfNextYear = () => {
     return '일월화수목금토'[day];
 };
 
-//오늘(10월 7일)로 부터 100일 후의 날짜는?
-const after100 = () => {
+//4)
+const getAfter100Days = () => {
     const today = new Date();
     return new Date(
         today.getFullYear(),
