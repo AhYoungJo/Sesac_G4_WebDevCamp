@@ -23,7 +23,7 @@ const 범위 = {
     ㅎ: '하-힣',
 };
 
-const isHanGel = char => {
+const isKorean = char => {
     const u_char = char.charCodeAt(0);
     if (u_char >= '가'.charCodeAt(0) && u_char <= '힣'.charCodeAt(0))
         return true;
@@ -36,7 +36,7 @@ const searchByKoreanInitialSound = (strs, pattern) => {
     // 패턴의 각 초성에 해당하는 범위로 정규식 생성
     const reg = new RegExp(
         `${[...pattern]
-            .map(char => (isHanGel(char) ? `[${범위[char]}]` : char))
+            .map(char => (isKorean(char) ? `[${범위[char]}]` : char))
             .join('')}`,
     );
 
