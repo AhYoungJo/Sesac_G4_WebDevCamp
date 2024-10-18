@@ -34,6 +34,7 @@ const isHanGel = char => {
 
 const searchByKoreanInitialSound = (strs, pattern) => {
     // 패턴의 각 초성에 해당하는 범위로 정규식 생성
+    //초성이면 초성 검색 범위로 지정해줘야 함 
     const reg = new RegExp(
         `${[...pattern]
             .map(char => (isHanGel(char) ? `[${범위[char]}]` : char))
