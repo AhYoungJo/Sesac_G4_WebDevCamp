@@ -13,7 +13,6 @@ const isEndJaum = str => {
     const lastChar = str[str.length - 1].charCodeAt(0);
 
     if (isJongSeong(lastChar)) return true;
-
     //초성이거나, 한글이 아닐 때 적용하는 매칭 패턴
     const regExp = /[ㄱ-ㅎmnr136780]$/;
     return regExp.test(str);
