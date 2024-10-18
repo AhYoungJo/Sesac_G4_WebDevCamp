@@ -1,20 +1,18 @@
 const assert = require('assert');
 
-const format_$ = str => str.replace(/([A-Z])([a-z\s]*)/g, '*$1*-$2');
 
-const upperToLower = str => {
-    return format_$(str).toLowerCase();
-};
+function upperToLowerX(str) {
+    return str.replace(/([A-Z])/g, matchedStr => {
+        return `*${matchedStr.toLowerCase()}*-`;
+    });
+}
+function reverse(str) {
+    return str.replace(/([A-Z]*)([a-z]*)/g, (_matchedStr, upper, lower) => {
+        // console.log(upper, lower);
+        return `${upper?.toLowerCase()}${lower ? lower.toUpperCase() : ''}`;
+    });
+}
 
-const lowerToUpper = str => {
-    return format_$(str).toUpperCase();
-};
+assert.deepStrictEqual(reverse('Senior Coding Learning JS'), 'sENIOR cODING lEARNING js');
+assert.deepStrictEqual(reverse('HeLLo'), 'hEllO');
 
-assert.deepStrictEqual(
-    upperToLower('Senior Coding Learning JS'),
-    '*s*-enior *c*-oding *l*-earning *j*-*s*-',
-);
-assert.deepStrictEqual(
-    lowerToUpper('Senior Coding Learning JS'),
-    '*S*-ENIOR *C*-ODING *L*-EARNING *J*-*S*-',
-);
