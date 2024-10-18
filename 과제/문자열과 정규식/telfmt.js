@@ -16,6 +16,8 @@ const telfmt = str => {
             return replaceFormat(str, 2);
         case '15':
             return str.replace(/^([0-9]{4})([0-9]{4})$/g, '$1-$2');
+        case '05':
+            return str.replace(/^([0-9]{4})([0-9]{4})([0-9]{4})$/g, '$1-$2-$3');
         default:
             return replaceFormat(str, 3);
     }
@@ -32,6 +34,7 @@ assert.deepStrictEqual(
     telfmt('010-233df'),
     '잘못된 전화번호입니다. (숫자만 가능)',
 );
+assert.deepStrictEqual(telfmt('050712345678'), '0507-1234-5678');
 
 //리팩토링(전)
 // const telfmt = str => {
