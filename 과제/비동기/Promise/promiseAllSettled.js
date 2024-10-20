@@ -1,13 +1,20 @@
 const assert = require('assert');
+const randTime = require('./randTime');
 
-const randTime = val =>
-    new Promise(resolve => {
-        setTimeout(() => {
-            resolve(val);
-        }, val);
-    });
-
-const vals = [1, 2, 3];
+const allSettledResults = [
+    {
+        status: 'fulfilled',
+        value: 11,
+    },
+    {
+        status: 'rejected',
+        reason: 'RRR',
+    },
+    {
+        status: 'fulfilled',
+        value: 33,
+    },
+];
 
 const promiseAllSettled = arr => {
     const promiseArr = [];
@@ -30,7 +37,6 @@ const promiseAllSettled = arr => {
 promiseAllSettled([randTime(11), Promise.reject('RRR'), randTime(33)])
     .then(array => {
         console.table(array);
-        // console.log(JSON.stringify(array, null, '  '));
         console.log('여긴 과연 호출될까?!');
         assert.deepStrictEqual(array, allSettledResults);
     })
