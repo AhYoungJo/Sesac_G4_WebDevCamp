@@ -18,12 +18,12 @@ const promiseAll = arr => {
     });
 };
 
-// promiseAll([randTime(1), randTime(2), randTime(3)])
-//     .then(arr => {
-//         console.table(arr);
-//         assert.deepStrictEqual(arr, vals);
-//     })
-//     .catch(console.error);
+promiseAll([randTime(1), randTime(2), randTime(3)])
+    .then(arr => {
+        console.table(arr);
+        assert.deepStrictEqual(arr, vals);
+    })
+    .catch(console.error);
 
 promiseAll([randTime(11), Promise.reject('RRR'), randTime(33)])
     .then(array => {
