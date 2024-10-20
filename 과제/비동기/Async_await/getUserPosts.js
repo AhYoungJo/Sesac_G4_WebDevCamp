@@ -21,7 +21,7 @@ const getUserPosts = async id => {
         return {
             id: user.id,
             name: user.name,
-            posts: [...posts].map(({userId, ...rest}) => rest),
+            posts: posts.map(({userId, ...rest}) => rest),
         };
     } catch (error) {
         //reject()
