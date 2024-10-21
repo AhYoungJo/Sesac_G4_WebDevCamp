@@ -2,7 +2,7 @@ const depthTimer = val =>
     new Promise((resolve, reject) => {
         setTimeout(() => {
             console.log(`depth${val}`, new Date());
-            val <= 3
+            val < 3
                 ? resolve(val + 1)
                 : reject(new Error('Already 3-depth!!'));
         }, 1000 * val);
