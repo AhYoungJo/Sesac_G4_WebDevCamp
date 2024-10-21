@@ -16,7 +16,7 @@ const getPosts = async userId => {
         const posts = await fetch(
             `https://jsonplaceholder.typicode.com/posts?userId=${userId}`,
         ).then(res => res.json());
-        for ({id, title} of posts) {
+        for ({ id, title } of posts) {
             const comments = await fetch(
                 `https://jsonplaceholder.typicode.com/posts/${id}/comments`,
             ).then(res => res.json());
@@ -27,11 +27,11 @@ const getPosts = async userId => {
             });
         }
         //resolve({state: 'fulfilled', result: posts_comments});
-        return {state: 'fulfilled', result: posts_comments};
+        return { state: 'fulfilled', result: posts_comments };
     } catch (error) {
         //reject({ state: 'rejected', reason: error });
-        return {state: 'rejected', reason: error};
+        return { state: 'rejected', reason: error };
     }
 };
 
-getPosts(1).then(res => console.dir(res, {depth: null}));
+getPosts(1).then(res => console.dir(res, { depth: null }));
