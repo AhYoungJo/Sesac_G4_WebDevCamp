@@ -1,11 +1,11 @@
-const depthTimer = val =>
+const depthTimer = depth =>
     new Promise((resolve, reject) => {
         setTimeout(() => {
             console.log(`depth${val}`, new Date());
             val < 3
-                ? resolve(val + 1)
+                ? resolve(depth + 1)
                 : reject(new Error('Already 3-depth!!'));
-        }, 1000 * val);
+        }, 1000 * depth);
     });
 
 console.log('START!', new Date());
